@@ -4,7 +4,7 @@ CREATE TABLE pessoa (
 	nome varchar (50),
 	sobrenome varchar (50),
 	idade int,
-	check (idade >= 0)
+	check (idade >= 0) --Checagem da idade
 );
 
 --Questão 02. Altere a tabela pessoa e crie uma restrição utilizando a especificação unique (A1, A2, ..., Am) para os campos ID, nome e sobrenome.
@@ -21,9 +21,23 @@ CREATE TABLE endereco (
 	rua varchar(100),
 	primary key (ID)
 );
-
+--Adicionei uma coluna endereco em pessoa.
 ALTER TABLE pessoa
 ADD endereco INT;
-
+--Criei em pessoa uma chave estrangeira de endereco, criando assim a integridade referencial
 ALTER TABLE pessoa
 ADD CONSTRAINT fk_endereco FOREIGN KEY (endereco) REFERENCES endereco(ID);
+
+-- Criei alguns testes:
+--Adicionei um endereco na tabela endereco, para poder usar em pessoa
+INSERT INTO endereco
+(ID, rua)
+VALUES (1, 'Rua dos Cibernéticos');
+--Exemplo de insert na tabela pessoa que dará errado, pois a idade não passa pela cláusula de checagem e o ID do endereco não existe, violando a integridade referêncial
+INSERT INTO pessoa
+(ID, nome, sobrenome, idade, endereco)
+VALUES (01, 'Eduardo', 'Silva', -1, 2);
+--Exemplo correto de insert na tabela pessoa.
+INSERT INTO pessoa
+(ID, nome, sobrenome, idade, endereco)
+VALUES (01, 'Eduardo', 'Silva', 19, 1);
